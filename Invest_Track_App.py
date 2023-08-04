@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import yfinance as yf
+import numpy as np
+from datetime import datetime
 
 st.set_page_config(page_title='Raghus Folio Dashboard')
 st.title('My Folio Dashboard 📊')
@@ -18,6 +20,7 @@ def get_price_data(df):
 if uploaded_file:
     st.markdown('----')
     df=pd.read_excel(uploaded_file,engine='openpyxl')
+    
     folio_list=df["Folio"].unique().tolist()
     #folio_list.insert(0,'All')
     grouping_fields=df.columns.values.tolist()
@@ -57,3 +60,6 @@ if uploaded_file:
     st.markdown('----')
     st.markdown("**:red[Investment and Gain/Loss Summary by Stock]**")
     st.dataframe(df_grp_sorted)
+
+if st.sidebar.checkbox("Clear All"):
+    st.cache_data.clear()
