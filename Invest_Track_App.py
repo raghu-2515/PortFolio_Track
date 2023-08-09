@@ -22,13 +22,19 @@ if uploaded_file:
     df=pd.read_excel(uploaded_file,engine='openpyxl')
     
     folio_list=df["Folio"].unique().tolist()
-    #folio_list.insert(0,'All')
-    grouping_fields=df.columns.values.tolist()
+    folio_list.insert(0,'All')
     select_folio=st.sidebar.selectbox('Select Folio',folio_list,index=0)
-
+    
+    if select_folio=="All":
+        grouping_fields=["Folio","Hold Time","Sector","MSTAR"]
+    else:
+        grouping_fields=["Symbol","Hold Time","Sector","MSTAR"]
     groupby_column=st.sidebar.selectbox('Select Grouping Field',grouping_fields,index=0)
     
-    df_folio=(df.loc[df['Folio'] == select_folio])
+    if select_folio=='All':
+        df_folio=df
+    else:
+        df_folio=(df.loc[df['Folio'] == select_folio])
     df_folio.reset_index(drop=True, inplace=True)
     no_of_stocks=len(df_folio)
     
